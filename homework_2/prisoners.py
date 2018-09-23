@@ -3,7 +3,7 @@ from game import Game
 
 def main():
     game = Game()
-    while game.get_n_plays() < 20: # game loop
+    while game.get_n_plays() < 50: # game loop
         game.play()
     game.print_stats()
 

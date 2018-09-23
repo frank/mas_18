@@ -19,13 +19,16 @@ class Player:
         self.previous_payoffs = []
         self.score = 0
         print("P" + str(self.id), "strategy?")
-        print("\t(1) Tit for tat")
-        print("\t(2) Retaliator")
-        print("\t(3) Cooperator")
-        print("\t(4) Betrayer")
-        print("\t(5) Random")
-        print("\t(6) Occasional betrayer")
-        print("\t(7) Tit for two tats")
+        print("\t(1)  Tit for tat")
+        print("\t(2)  Retaliator")
+        print("\t(3)  Cooperator")
+        print("\t(4)  Betrayer")
+        print("\t(5)  Random")
+        print("\t(6)  Occasional betrayer")
+        print("\t(7)  Tit for two tats")
+        print("\t(8)  Kind tit for tat")
+        print("\t(9)  Once betrayer")
+        print("\t(10) Mean tit for tat")
         strat_input = input()
         self.strategy = strat_input
         # retaliator parameter
@@ -46,12 +49,18 @@ class Player:
             return self.occasional_betrayer()
         elif self.strategy == '7':
             return self.tit_for_two_tats()
+        elif self.strategy == '8':
+            return self.kind_tit_for_tat()
+        elif self.strategy == '9':
+            return self.once_betrayer()
+        elif self.strategy == '10':
+            return self.mean_tit_for_tat()
         return 'goof'
 
     def tit_for_tat(self):
         if not self.previous_moves:
             return 'quiet'
-        elif self.previous_moves[-1][1] == 'confess':
+        elif self.previous_payoffs[-1] < -11.5:
             return 'confess'
         return 'quiet'
 
@@ -79,7 +88,26 @@ class Player:
     def tit_for_two_tats(self):
         if len(self.previous_moves) < 2:
             return 'quiet'
-        if self.previous_moves[-1][1] == self.previous_moves[-2][1] == 'confess':
+        if self.previous_payoffs[-1] < -11.5 and self.previous_payoffs[-2] < -11.5:
+            return 'confess'
+        return 'quiet'
+
+    def kind_tit_for_tat(self):
+        if not self.previous_moves:
+            return 'quiet'
+        elif self.previous_payoffs[-1] < -11.5:
+            if random.uniform(0, 1) < 0.1:
+                return 'quiet'
+            return 'confess'
+        return 'quiet'
+
+    def once_betrayer(self):
+        if self.game.get_n_plays() == 0:
+            return 'confess'
+        return 'quiet'
+
+    def mean_tit_for_tat(self):
+        if not self.previous_moves or self.previous_payoffs[-1] < -11.5:
             return 'confess'
         return 'quiet'
 
