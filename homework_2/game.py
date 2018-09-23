@@ -31,10 +31,10 @@ class Game:
 
     def print_stats(self):
         print()
-        print("Moves:")
+        print("    P1\t\tP2")
         for i, move in enumerate(self.p_one.get_previous_moves()):
             nr = str(i + 1) + '. ' if i + 1 < 10 else str(i + 1) + '.'
-            print(nr, move[0], "\t" , move[1])
+            print(nr, move[0] + '\t' + move[1])
         print()
         print("Scores:")
         print("Player 1:", self.p_one.get_score())
