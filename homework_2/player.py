@@ -16,6 +16,7 @@ class Player:
         # Stores all previous moves as a 2D array. First element of each tuple
         # in the array is always the subject player
         self.previous_moves = []
+        self.previous_payoffs = []
         self.score = 0
         print("P" + str(self.id), "strategy?")
         print("\t(1) Tit for tat")
@@ -24,6 +25,7 @@ class Player:
         print("\t(4) Betrayer")
         print("\t(5) Random")
         print("\t(6) Occasional betrayer")
+        print("\t(7) Tit for two tats")
         strat_input = input()
         self.strategy = strat_input
         # retaliator parameter
@@ -42,6 +44,8 @@ class Player:
             return self.random()
         elif self.strategy == '6':
             return self.occasional_betrayer()
+        elif self.strategy == '7':
+            return self.tit_for_two_tats()
         return 'goof'
 
     def tit_for_tat(self):
@@ -72,11 +76,19 @@ class Player:
             return 'quiet'
         return 'confess'
 
+    def tit_for_two_tats(self):
+        if len(self.previous_moves) < 2:
+            return 'quiet'
+        if self.previous_moves[-1][1] == self.previous_moves[-2][1] == 'confess':
+            return 'confess'
+        return 'quiet'
+
     def update(self, own_move, other_move, utility):
         self.previous_moves.append((own_move, other_move))
         if other_move == 'confess':
             self.revenge_mode = True
         self.score += utility
+        self.previous_payoffs.append(utility)
 
     def get_score(self):
         return self.score
