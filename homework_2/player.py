@@ -27,8 +27,8 @@ class Player:
         print("\t(6)  Occasional betrayer")
         print("\t(7)  Tit for two tats")
         print("\t(8)  Kind tit for tat")
-        print("\t(9)  Once betrayer")
-        print("\t(10) Mean tit for tat")
+        print("\t(9)  Initial pessimist")
+        print("\t(10) Pessimistic tit for tat")
         strat_input = input()
         self.strategy = strat_input
         # retaliator parameter
@@ -52,9 +52,9 @@ class Player:
         elif self.strategy == '8':
             return self.kind_tit_for_tat()
         elif self.strategy == '9':
-            return self.once_betrayer()
+            return self.initial_pessimist()
         elif self.strategy == '10':
-            return self.mean_tit_for_tat()
+            return self.pessimistic_tit_for_tat()
         return 'goof'
 
     def tit_for_tat(self):
@@ -101,12 +101,12 @@ class Player:
             return 'confess'
         return 'quiet'
 
-    def once_betrayer(self):
+    def initial_pessimist(self):
         if self.game.get_n_plays() == 0:
             return 'confess'
         return 'quiet'
 
-    def mean_tit_for_tat(self):
+    def pessimistic_tit_for_tat(self):
         if not self.previous_moves or self.previous_payoffs[-1] < -11.5:
             return 'confess'
         return 'quiet'
@@ -123,3 +123,6 @@ class Player:
 
     def get_previous_moves(self):
         return self.previous_moves
+
+    def get_previous_payoffs(self):
+        return self.previous_payoffs
