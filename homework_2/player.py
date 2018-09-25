@@ -60,7 +60,7 @@ class Player:
     def tit_for_tat(self):
         if not self.previous_moves:
             return 'quiet'
-        elif self.previous_payoffs[-1] < -11.5:
+        elif self.opponent_has_confessed():
             return 'confess'
         return 'quiet'
 
@@ -88,14 +88,14 @@ class Player:
     def tit_for_two_tats(self):
         if len(self.previous_moves) < 2:
             return 'quiet'
-        if self.previous_payoffs[-1] < -11.5 and self.previous_payoffs[-2] < -11.5:
+        if self.opponent_has_confessed(2):
             return 'confess'
         return 'quiet'
 
     def kind_tit_for_tat(self):
         if not self.previous_moves:
             return 'quiet'
-        elif self.previous_payoffs[-1] < -11.5:
+        elif self.opponent_has_confessed():
             if random.uniform(0, 1) < 0.1:
                 return 'quiet'
             return 'confess'
@@ -107,9 +107,19 @@ class Player:
         return 'quiet'
 
     def pessimistic_tit_for_tat(self):
-        if not self.previous_moves or self.previous_payoffs[-1] < -11.5:
+        if not self.previous_moves or self.opponent_has_confessed():
             return 'confess'
         return 'quiet'
+
+    def opponent_has_confessed(self, turn=1):
+        confess_count = 0
+        for i in range(-1, -1 - turn, -1):
+            if (self.previous_moves[i][0] == 'confess' and self.previous_payoffs[i] < -4) \
+                or (self.previous_moves[i][0] == 'quiet' and self.previous_payoffs[i] < -6.5):
+                confess_count += 1
+        if confess_count >= turn:
+            return True
+        return False
 
     def update(self, own_move, other_move, utility):
         self.previous_moves.append((own_move, other_move))
