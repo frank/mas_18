@@ -3,8 +3,9 @@ import numpy as np
 
 class Arm:
 
-    def __init__(self):
-        self.mean = np.random.normal(0, 0.4)
+    def __init__(self, seed, spread=2):
+        np.random.seed(seed)
+        self.mean = np.random.uniform(-spread, spread)
         self.stdev = 1
 
     def pull(self):
