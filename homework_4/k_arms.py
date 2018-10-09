@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 import matplotlib.pyplot as plt
 from K_Armed_Bandit import K_Armed_Bandit
 from E_Greedy import E_Greedy
@@ -10,6 +11,7 @@ def argument_error():
     print("Usage: python3 k_arms.py [k] [seed] [spread]")
     sys.exit()
     return
+
 
 if __name__ == '__main__':
 
@@ -49,5 +51,6 @@ if __name__ == '__main__':
     plt.legend(['$\epsilon$-greedy', 'optimistic $\epsilon$-greedy', 'UCB'])
     plt.ylabel('Mean reward')
     plt.xlabel('Time')
-    plt.title('Mean reward over time')
+    plt.ylim(bottom=0)
+    plt.title('Mean reward over time with $k=7$')
     plt.show()
