@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Agent:
 
     def __init__(self, n, k_armed_bandit):
@@ -14,10 +17,7 @@ class Agent:
         # Apply update function for the value expectation
         self.q[a] = self.q[a] + (self.r[self.t] - self.q[a]) / self.k[a]
         self.t += 1
-
-    def pull_greedy(self):
-        max_arm = self.q.index(max(self.q))
-        self.pull_arm(max_arm)
+        return np.mean(self.r)
 
     def print_all(self):
         print("k:", self.k)

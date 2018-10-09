@@ -1,4 +1,5 @@
 import sys
+import matplotlib.pyplot as plt
 from K_Armed_Bandit import K_Armed_Bandit
 from E_Greedy import E_Greedy
 from Optimistic_E_Greedy import Optimistic_E_Greedy
@@ -22,19 +23,38 @@ if __name__ == '__main__':
         sys.exit()
 
     # Set seed for the random generator
-    seed = float(sys.argv[2]) if len(sys.argv) > 2 else 0
+    seed = int(sys.argv[2]) if len(sys.argv) > 2 else 0
 
     # Set spread for the value distributions
     spread = float(sys.argv[3]) if len(sys.argv) > 3 else 2
 
     k_armed_bandit = K_Armed_Bandit(seed, n, spread)
 
+    # Parameters
     e = 0.1
     start = 100
     c = 1.0
+
+    # Agents
     e_greedy = E_Greedy(n, k_armed_bandit, e)
     optimistic_e_greedy = Optimistic_E_Greedy(n, k_armed_bandit, e, start)
     ucb = UCB(n, k_armed_bandit, c)
 
-    for i in range(5):
-        ucb.play()
+    # Mean rewards
+    e_greedy_mean_rewards = []
+    optimistic_e_greedy_mean_rewards = []
+    ucb_mean_rewards = []
+
+    for i in range(1000):
+        e_greedy_mean_rewards.append(e_greedy.play())
+        optimistic_e_greedy_mean_rewards.append(optimistic_e_greedy.play())
+        ucb_mean_rewards.append(ucb.play())
+
+    # Plot
+    plt.plot(e_greedy_mean_rewards)
+    plt.plot(optimistic_e_greedy_mean_rewards)
+    plt.plot(ucb_mean_rewards)
+    plt.ylabel('Mean reward')
+    plt.xlabel('Time')
+    plt.title('Mean reward over time')
+    plt.show()

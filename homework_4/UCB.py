@@ -11,6 +11,10 @@ class UCB(Agent):
         self.q = np.array(self.q)
 
     def play(self):
-        confidence_bounds = self.q + self.c * (np.log(self.t) / 2 * self.k)
-        self.pull_arm(np.argmax(confidence_bounds))
-        print(confidence_bounds)
+        confidence_bounds = []
+        for a in range(self.n):
+            if self.k[a] == 0:
+                confidence_bounds.append(np.Inf)
+            else:
+                confidence_bounds.append(self.q[a] + self.c * np.sqrt(np.log(self.t) / 2 * self.k[a]))
+        return self.pull_arm(np.argmax(confidence_bounds))

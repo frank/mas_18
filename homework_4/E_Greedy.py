@@ -12,8 +12,12 @@ class E_Greedy(Agent):
         np.random.seed(2)
         random.seed(2)
 
+    def pull_greedy(self):
+        max_arm = self.q.index(max(self.q))
+        return self.pull_arm(max_arm)
+
     def play(self):
         if np.random.uniform(0, 1) < self.e:
             self.pull_arm(random.randrange(self.n))
             return
-        self.pull_greedy()
+        return self.pull_greedy()
