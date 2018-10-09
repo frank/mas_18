@@ -18,6 +18,8 @@ class E_Greedy(Agent):
 
     def play(self):
         if np.random.uniform(0, 1) < self.e:
-            self.pull_arm(random.randrange(self.n))
-            return
+            return self.pull_arm(random.randrange(self.n))
         return self.pull_greedy()
+
+    def __str__(self):
+        return "E-Greedy"

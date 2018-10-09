@@ -18,3 +18,6 @@ class UCB(Agent):
             else:
                 confidence_bounds.append(self.q[a] + self.c * np.sqrt(np.log(self.t) / 2 * self.k[a]))
         return self.pull_arm(np.argmax(confidence_bounds))
+
+    def __str__(self):
+        return "UCB"
